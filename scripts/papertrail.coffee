@@ -210,7 +210,7 @@ module.exports = (robot) ->
   papertrailServers = new Servers
 
 
-  robot.respond /(?:log|papertrail) me(?: group=(?:"([^"]+)"|(\S+)))?(?: (?:server|host|system|source)=(\S+))?(?: (.*))?$/, (msg) ->
+  robot.respond /(?:log|papertrail) me(?: group=(?:"([^"]+)"|(\S+)))?(?: (?:server|host|system|source)=(\S+))?(?: (.*))?$/i, (msg) ->
     fetchResults = (queryOptions) ->
       if queryOptions.group_id?
         htmlUrl = "https://papertrailapp.com/groups/#{queryOptions.group_id}/events"
@@ -259,7 +259,7 @@ module.exports = (robot) ->
     else
       fetchResults(q: query)
 
-  robot.respond /papertrail (refresh )?groups$/, (msg) ->
+  robot.respond /papertrail (refresh )?groups$/i, (msg) ->
     printDescription = (groups) ->
       groupDescriptions = for group in groups
         group.description()
@@ -272,7 +272,7 @@ module.exports = (robot) ->
     else
       printDescription(papertrailGroups.groups)
 
-  robot.respond /papertrail (refresh )?(?:servers|sources|hosts|systems)$/, (msg) ->
+  robot.respond /papertrail (refresh )?(?:servers|sources|hosts|systems)$/i, (msg) ->
     printDescription = (servers) ->
       serverDescriptions = for server in servers
         server.name()
@@ -286,7 +286,7 @@ module.exports = (robot) ->
       printDescription(papertrailServers.servers)
 
 
-  robot.respond /papertrail alias group +(.*) +to (\S+)/, (msg) ->
+  robot.respond /papertrail alias group +(.*) +to (\S+)/i, (msg) ->
     groupName = msg.match[1]
     alias = msg.match[2]
 
@@ -297,7 +297,7 @@ module.exports = (robot) ->
       else
         msg.send "Could not find group #{groupName}"
 
-  robot.respond /papertrail (?:remove|delete) alias (\S+) from group +(.*)/, (msg) ->
+  robot.respond /papertrail (?:remove|delete) alias (\S+) from group +(.*)/i, (msg) ->
     groupName = msg.match[2]
     alias = msg.match[1]
 
@@ -308,7 +308,7 @@ module.exports = (robot) ->
       else
         msg.send "Could not find group #{groupName}"
 
-  robot.respond /papertrail group (.*)/, (msg) ->
+  robot.respond /papertrail group (.*)/i, (msg) ->
     groupName = msg.match[1]
 
     papertrailGroups.find groupName, (group) ->
@@ -318,7 +318,7 @@ module.exports = (robot) ->
       else
         msg.send "Could not find group #{groupName}"
 
-  robot.respond /papertrail (?:server|source|host|system) (.*)/, (msg) ->
+  robot.respond /papertrail (?:server|source|host|system) (.*)/i, (msg) ->
     serverName = msg.match[1]
 
     papertrailServers.find serverName, (server) ->
