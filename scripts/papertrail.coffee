@@ -27,7 +27,7 @@
 module.exports = (robot) ->
   baseUrl = "https://papertrailapp.com/api/v1/"
 
-  http = (path) ->
+  http_request = (path) ->
     robot.http("#{baseUrl}#{path}")
       .headers("X-Papertrail-Token": process.env.HUBOT_PAPERTRAIL_API_TOKEN)
 
@@ -132,7 +132,7 @@ module.exports = (robot) ->
           @find(value, callback, true)
 
     fetch: (callback) ->
-      http("groups.json").get() (err, res, body) =>
+      http_request("groups.json").get() (err, res, body) =>
         if res.statusCode != 200
           robot.logger.warning "Error talking to Papertrail"
           robot.logger.warning body
@@ -193,7 +193,7 @@ module.exports = (robot) ->
           @find(value, callback, true)
 
     fetch: (callback) ->
-      http("systems.json").get() (err, res, body) =>
+      http_request("systems.json").get() (err, res, body) =>
         if res.statusCode != 200
           robot.logger.warning "Error talking to Papertrail"
           robot.logger.warning body
@@ -222,7 +222,7 @@ module.exports = (robot) ->
       if queryOptions.q?
         htmlUrl += "?q=#{escape(queryOptions.q)}"
 
-      http("events/search.json")
+      http_request("events/search.json")
         .query(queryOptions)
         .get() (err, res, body) ->
           if res.statusCode != 200
