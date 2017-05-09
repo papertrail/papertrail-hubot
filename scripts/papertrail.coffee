@@ -25,6 +25,9 @@
 #
 
 module.exports = (robot) ->
+  if !process.env.HUBOT_PAPERTRAIL_API_TOKEN
+    robot.logger.error "Missing HUBOT_PAPERTRAIL_API_TOKEN in environment: please set and try again"
+    return
   baseUrl = "https://papertrailapp.com/api/v1/"
 
   http_request = (path) ->
